@@ -47,6 +47,7 @@ void Logg::logging(String s)
 {
 #ifdef _SERIAL
 	Serial.println(s);
+	return;
 #endif // _SERIAL
 
 	if (_log.length() >= maxCount) {
