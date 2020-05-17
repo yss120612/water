@@ -122,17 +122,17 @@ void ESP8266WebSpiffsUpdater::setup(ESP8266WebServer *server,  const char * user
 
 
 			if (!Update.begin(maxSketchSpace, U_FS)) {//start with max available size
-				logg.logging("Update low space");
+				//logg.logging("Update low space");
 				_setUpdaterError();
 			}
 		}
 		else if (_authenticated && upload.status == UPLOAD_FILE_WRITE && !_updaterError.length()) {
 
 			if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
-				logg.logging("Update diff size");
+				//logg.logging("Update diff size");
 				_setUpdaterError();
 			}
-			logg.logging("current length="+String(upload.currentSize));
+			//logg.logging("current length="+String(upload.currentSize));
 		}
 		else if (_authenticated && upload.status == UPLOAD_FILE_END && !_updaterError.length()) {
 			if (Update.end(true)) { //true to set the size to the current progress

@@ -80,6 +80,7 @@ boolean HttpHelper::isConnected()
 }
 
 void HttpHelper::handleRoot() {
+	
 	if (!server->authenticate(webuser, webpass))
 		return server->requestAuthentication();
 	if (!handleFileRead("/")) {
@@ -238,6 +239,9 @@ void HttpHelper::WiFiconnect()
 				break;
 			}
 		}
+		if (WiFi.isConnected()){
+			logg.logging("Connected! My IP is "+WiFi.localIP().toString());
+		}
 	}
 }
 
@@ -352,7 +356,7 @@ boolean HttpHelper::handleFileRead(String path) {
 		//	//server sends file
 		//	size_t sent = ESP8266WebServer::streamFile(file, contentType);
 		//}
-		//size_t sent = server->streamFile(file, contentType);
+		size_t sent = server->streamFile(file, contentType);
 		file.close();
 		return true;
 	} //if SPIFFS.exists
