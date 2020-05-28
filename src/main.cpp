@@ -1,11 +1,14 @@
 
 
 #include <Arduino.h>
+
 #include "Log.h"
 #include "HttpHelper.h"
+#include "Rtc.h"
 
 
 HttpHelper httph;
+Rtc1302 rtc;
 
 void setup() {
   // put your setup code here, to run once:
@@ -25,10 +28,10 @@ void setup() {
   logg.logging("ESP.getSketchSize()=" + String(ESP.getSketchSize()));
   logg.logging("ESP.getVcc()=" + String(ESP.getVcc()));
   logg.logging("ESP.getCoreVersion()=" + ESP.getCoreVersion());
-  Serial.println("Alll Okkkkk");
- 
-	
+  	
   httph.setup();
+  rtc.setup();
+  
 }
 
 int i=0;
