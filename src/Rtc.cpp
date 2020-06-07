@@ -15,6 +15,7 @@ if (_rtc!=NULL) delete(_rtc);
 void Rtc1302::setup(){
 ThreeWire myWire(DS1302_DAT,DS1302_CLK,DS1302_RST); // IO, SCLK, CE
 _rtc= new RtcDS1302<ThreeWire>(myWire);
+
 //Serial.print(__DATE__);
 //Serial.println(__TIME__);
 RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
@@ -43,7 +44,7 @@ String Rtc1302::toString(const RtcDateTime& dt)
     return String(datestring);
 }
 
-String Rtc1302::settime(uint8_t offset)
+bool Rtc1302::settime(uint8_t offset)
 {
     
 }

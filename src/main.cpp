@@ -5,10 +5,12 @@
 #include "Log.h"
 #include "HttpHelper.h"
 #include "Rtc.h"
-
+#include "Buttons.h"
 
 HttpHelper httph;
 Rtc1302 rtc;
+Buttons btns;
+
 
 void setup() {
   // put your setup code here, to run once:
@@ -31,18 +33,45 @@ void setup() {
   	
   httph.setup();
   rtc.setup();
-  
+  btns.add(D3,LOW);
+
+}
+
+void processButtons(){
+event_t ev;
+while (btns.getEvent(&ev)){
+  switch (ev.state)
+  {
+  case BTN_CLICK:
+    logg.logging("CLICK "+ String(ev.button)+" count="+String(ev.count));
+    break;
+  case BTN_LONGCLICK:
+    logg.logging("LONGCLICK "+ String(ev.button)+" count="+String(ev.count));
+    break;
+    case BTN_RELEASED:
+    //logg.logging("RELEASED "+ String(ev.button));
+    break;
+    case BTN_DBLCLICK:
+    //logg.logging("XCLICK "+ String(ev.button));
+    break;
+    case BTN_PRESSED:
+      logg.logging("PRESSED "+ String(ev.button));
+    break;
+  }
+}
 }
 
 int i=0;
 int k=0;
+event_t ev;
 void loop() {
   // put your main code here, to run repeatedly:
   httph.clientHandle();
+  processButtons(); 
   delay(5);
   i+=5;
   digitalWrite(LED_BUILTIN,i>1500);
-  if (i>6000) 
+  if (i>12000) 
   {
   i=0;
   k++;
