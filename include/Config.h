@@ -8,6 +8,8 @@ extern const char * webuser;
 extern const char * webpass;
 extern const char * wifiuser;
 extern const char * wifipass;
+extern const char * wifiuser1;
+extern const char * wifipass1;
 
 #define SENSOR1 1
 #define SENSOR2 2

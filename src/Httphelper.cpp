@@ -222,31 +222,41 @@ void HttpHelper::WiFiconnect()
 			break;
 		}
 
+		if (WiFi.SSID(i).equals(wifiuser1))
+		{
+			modeWiFi = 2; // наша сеть присутствует
+			break;
+		}
+
+
 	}
 
-	if (modeWiFi == 1) {
+	if (modeWiFi >0 ) {
 		// пробуем подключиться
 
-		logg.logging("Connecting to " + String(wifiuser));
+		logg.logging("Connecting to " + String(modeWiFi==1?wifiuser:wifiuser1));
 
 		WiFi.disconnect(true);
-		WiFi.begin(wifiuser, wifipass);
+		WiFi.begin(modeWiFi==1?wifiuser:wifiuser1,modeWiFi==1?wifipass:wifipass1);
 		// ждем N кол-во попыток, если нет, то AP Mode
 		byte tmp_while = 0;
 		while (WiFi.waitForConnectResult() != WL_CONNECTED) {
 			delay(1000);
 
-			logg.logging("Connecting to " + String(wifiuser));
+			logg.logging("Connecting to " + String(modeWiFi==1?wifiuser:wifiuser1));
 
 			if (tmp_while < 5) tmp_while++;
 			else {
 				modeWiFi = 0;
-				logg.logging("Connection to " + String(wifiuser) + " failed!");
+				logg.logging("Connection to " + String(modeWiFi==1?wifiuser:wifiuser1) + " failed!");
 				break;
 			}
 		}
+
+		
+
 		if (WiFi.isConnected()){
-			logg.logging("Connected! My IP is "+WiFi.localIP().toString());
+			logg.logging("Connected! My IP is "+WiFi.localIP().toString()+" My Gateway ip IP is "+WiFi.gatewayIP().toString());
 		}
 	}
 }

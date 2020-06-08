@@ -49,7 +49,4 @@ String Rtc1302::toString(const RtcDateTime& dt)
     return String(datestring);
 }
 
-bool Rtc1302::settime(uint8_t offset)
-{
-    
-}
+

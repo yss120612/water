@@ -81,61 +81,38 @@ void ICACHE_RAM_ATTR Buttons::_isr(Buttons *_this) {
     for (uint8_t i = 0; i < _this->_btns.length(); ++i) {
       if (_this->_btns[i].paused)
         continue;
-      //if (_this->_btns[i].duration) {
-        
 
         if (time + _this->_btns[i].duration < 0xFFFF)
-          _this->_btns[i].duration = time;
-        else
-          _this->_btns[i].duration = 0xFFFF;
-        //}
-      logg.logging("State="+String((inputs >> _this->_btns[i].pin) & 0x01));
-
-      if (((inputs >> _this->_btns[i].pin) & 0x01) == _this->_btns[i].level) { // Button pressed
-        if (! _this->_btns[i].pressed) {
-
-          if (time + _this->_btns[i].duration < 0xFFFF)
           _this->_btns[i].duration += time;
         else
           _this->_btns[i].duration = 0xFFFF;
+          
+      //logg.logging("State="+String((inputs >> _this->_btns[i].pin) & 0x01));
 
-          //_this->_btns[i].dblclickable = (_this->_btns[i].duration > 0) && (_this->_btns[i].duration <= DBLCLICK_TIME);
-          //_this->_btns[i].dblclickable = (_this->_btns[i].duration > 0) && (_this->_btns[i].duration <= DBLCLICK_TIME);
+      if (((inputs >> _this->_btns[i].pin) & 0x01) == _this->_btns[i].level) { // Button pressed
+        if (! _this->_btns[i].pressed) {
           if (_this->_btns[i].duration > DBLCLICK_TIME) 
           {
            _this->_btns[i].xdbl=0;
-           //_this->_btns[i].duration=0;
           }
+          _this->_btns[i].duration = 0;
           _this->_btns[i].pressed = true;
-          //_this->_btns[i].duration = 1;
-          //_this->_btns[i].xdbl += 1;
-          _this->onChange(BTN_PRESSED, i);
+          //_this->onChange(BTN_PRESSED, i);
         }
       } else { // Button released
         if (_this->_btns[i].pressed) { // Was pressed
-        logg.logging("dur="+String(_this->_btns[i].duration));
+        
           if (_this->_btns[i].duration >= LONGCLICK_TIME) {
-            _this->_btns[i].xdbl;
             _this->onChange(BTN_LONGCLICK, i,_this->_btns[i].xdbl);
             _this->_btns[i].xdbl = 0;
           } else if (_this->_btns[i].duration >= CLICK_TIME) {
-            //if (_this->_btns[i].dblclickable)
-            //  _this->onChange(BTN_DBLCLICK, i);
-            //else
              _this->_btns[i].xdbl += 1;
              _this->onChange(BTN_CLICK, i,_this->_btns[i].xdbl);
           } else {
-            //logg.logging("RELEASED STATE");
-            _this->onChange(BTN_RELEASED, i);
-             
+            //_this->onChange(BTN_RELEASED, i);
           }
           _this->_btns[i].pressed = false;
           _this->_btns[i].duration = 0;
-          //if ((_this->_btns[i].duration >= CLICK_TIME) && (_this->_btns[i].duration < LONGCLICK_TIME))
-            //_this->_btns[i].duration = 1;
-            //_this->_btns[i].xclc = 1;
-          //else
-            //_this->_btns[i].duration = 0;
         }
       }
     }
