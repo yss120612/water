@@ -7,17 +7,28 @@
 
 #include <ThreeWire.h>  
 #include <RtcDS1302.h>
+#include <WiFiUdp.h>
+#include <NtpClient.h>
 
 class Rtc1302
 {
 public:
 Rtc1302();
 ~Rtc1302();
-void setup();
+void setup(int interval= 60000*60*24);//default one per day
+void loop(long ms);
 bool settime(uint8_t offset);
 String toString(const RtcDateTime& dt);
+String timestring();
+bool isSuccess(){return upd_success;}
 private:
+void setfrominet();
 RtcDS1302<ThreeWire> * _rtc;
-RtcDateTime compiled;
+//RtcDateTime compiled;
+int _interval,_short_interval;
+long last_update;
+bool upd_success;
+WiFiUDP * ntpUDP;
+NTPClient * timeClient;
 };
 #endif

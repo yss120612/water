@@ -10,6 +10,9 @@ extern const char * wifiuser;
 extern const char * wifipass;
 extern const char * wifiuser1;
 extern const char * wifipass1;
+extern const char * ntp_server;
+
+#define TIME_OFFSET 8
 
 #define SENSOR1 1
 #define SENSOR2 2

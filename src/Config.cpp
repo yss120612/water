@@ -5,3 +5,4 @@ const char * wifiuser="Yss_GIGA";
 const char * wifipass="bqt3bqt3";
 const char * wifiuser1="academy";
 const char * wifipass1="123qweasd";
+const char * ntp_server="europe.pool.ntp.org";
