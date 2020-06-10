@@ -4,7 +4,7 @@
 #include  "Log.h"
 
 Rtc1302::Rtc1302(){
-_short_interval=60000;
+_short_interval=120000;
 last_update=0;
 upd_success=false;
 }
@@ -26,6 +26,7 @@ ThreeWire myWire(DS1302_DAT,DS1302_CLK,DS1302_RST); // IO, SCLK, CE
 _rtc= new RtcDS1302<ThreeWire>(myWire);
 _interval=interval;
 ntpUDP=new WiFiUDP();
+
 timeClient = new NTPClient(*ntpUDP ,ntp_server , 3600*TIME_OFFSET, _interval);
 
 //RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
@@ -81,7 +82,6 @@ void Rtc1302::setfrominet(){
     RtcDateTime d;
     d.InitWithEpoch64Time(timeClient->getEpochTime());
     _rtc->SetDateTime(d);
-uin
 }
 
 
