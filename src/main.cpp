@@ -41,8 +41,8 @@ void setup() {
   logg.logging("ESP.getCoreVersion()=" + ESP.getCoreVersion());
   	
   httph.setup();
-  rtc.setup();
   btns.add(D3,LOW);
+  
 
     
 
@@ -88,7 +88,7 @@ while (btns.getEvent(&ev)){
 }
 
 int i=0;
-
+int k=0;
 
 void loop() {
   // put your main code here, to run repeatedly:
@@ -100,7 +100,9 @@ void loop() {
   i+=5;
     
 
-  if (i>500) {
+  if (i>5000) {
+  if (k==0)    rtc.setup();
+  k=1;
     //logg.logging(timeClient.getFormattedTime());
     //logg.logging(String(timeClient.getMinutes()));
     i=0;
