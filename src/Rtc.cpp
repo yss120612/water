@@ -27,7 +27,7 @@ _rtc= new RtcDS1302<ThreeWire>(myWire);
 _interval=interval;
 ntpUDP=new WiFiUDP();
 timeClient = new NTPClient(*ntpUDP ,ntp_server , 3600*TIME_OFFSET, _interval);
-
+timeClient->begin();
 //RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
 
 _rtc->Begin();
@@ -70,6 +70,7 @@ void Rtc1302::loop(long ms)
                 setfrominet();
             }else 
             {
+                
                 logg.logging("Error update time on short period");
             }
             last_update=ms;
@@ -79,9 +80,11 @@ void Rtc1302::loop(long ms)
 
 void Rtc1302::setfrominet(){
     RtcDateTime d;
+    
     d.InitWithEpoch64Time(timeClient->getEpochTime());
+    logg.logging(String(d.Hour())+":"+String(d.Minute())+":"+String(d.Second()));
     _rtc->SetDateTime(d);
-uin
+
 }
 
 
