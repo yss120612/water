@@ -39,7 +39,7 @@ void setup() {
   logg.logging("ESP.getSketchSize()=" + String(ESP.getSketchSize()));
   logg.logging("ESP.getVcc()=" + String(ESP.getVcc()));
   logg.logging("ESP.getCoreVersion()=" + ESP.getCoreVersion());
-  	
+  
   httph.setup();
   btns.add(D3,LOW);
   
@@ -61,27 +61,36 @@ while (btns.getEvent(&ev)){
   {
   case BTN_CLICK:
     logg.logging("CLICK "+ String(ev.button)+" count="+String(ev.count));
-    if (ev.count==3)  if (true)
+    if (ev.count==1)  if (true)
     {
-      
+      logg.logging(rtc.timestring());
     }else{
       
     }
     if (ev.count==2) {
-      logg.logging("Success= "+ String(rtc.isSuccess())+" time="+rtc.timestring());
+      logg.logging("Success= "+ String(rtc.isSuccess()));
+      //+" time="+rtc.timestring());
+      logg.logging(rtc.test());
+      // pinMode(D0,OUTPUT);
+      // pinMode(D1,OUTPUT);
+      // pinMode(D2,OUTPUT);
+      // digitalWrite(D0,HIGH);
+      // digitalWrite(D1,HIGH);
+      // digitalWrite(D2,HIGH);
     }
     break;
   case BTN_LONGCLICK:
     logg.logging("LONGCLICK "+ String(ev.button)+" count="+String(ev.count));
+    
     break;
     case BTN_RELEASED:
     //logg.logging("RELEASED "+ String(ev.button));
     break;
     case BTN_DBLCLICK:
-    //logg.logging("XCLICK "+ String(ev.button));
+    logg.logging("XCLICK "+ String(ev.button));
     break;
     case BTN_PRESSED:
-      logg.logging("PRESSED "+ String(ev.button));
+      //logg.logging("PRESSED "+ String(ev.button));
     break;
   }
 }
@@ -100,7 +109,7 @@ void loop() {
   i+=5;
     
 
-  if (i>5000) {
+  if (i>500) {
   if (k==0)    rtc.setup();
   k=1;
     //logg.logging(timeClient.getFormattedTime());
