@@ -86,7 +86,7 @@ void ICACHE_RAM_ATTR Buttons::_isr(Buttons *_this) {
           _this->_btns[i].duration += time;
         else
           _this->_btns[i].duration = 0xFFFF;
-          
+
       //logg.logging("State="+String((inputs >> _this->_btns[i].pin) & 0x01));
 
       if (((inputs >> _this->_btns[i].pin) & 0x01) == _this->_btns[i].level) { // Button pressed
@@ -97,7 +97,7 @@ void ICACHE_RAM_ATTR Buttons::_isr(Buttons *_this) {
           }
           _this->_btns[i].duration = 0;
           _this->_btns[i].pressed = true;
-          //_this->onChange(BTN_PRESSED, i);
+          _this->onChange(BTN_PRESSED, i);
         }
       } else { // Button released
         if (_this->_btns[i].pressed) { // Was pressed

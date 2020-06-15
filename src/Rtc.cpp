@@ -30,7 +30,7 @@ ntpUDP=new WiFiUDP();
 timeClient = new NTPClient(*ntpUDP ,ntp_server , 3600*TIME_OFFSET, _interval);
 
 //RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
-
+timeClient->begin();
 _rtc->Begin();
 
 //logg.logging(toString(compiled));
@@ -41,9 +41,7 @@ void Rtc1302::loop(long ms)
 {
     if (!timeClient)
         return;
-    
-
-    
+   
     if (upd_success)
     {
         if (ms - last_update > _interval)
@@ -88,6 +86,7 @@ void Rtc1302::setfrominet(){
 
 String Rtc1302::toString(const RtcDateTime& dt)
 {
+
     char datestring[20];
     String s;
     
@@ -107,7 +106,11 @@ String Rtc1302::toString(const RtcDateTime& dt)
 
 String Rtc1302::timestring()
 {
+    if (_rtc->IsDateTimeValid())
     return toString(_rtc->GetDateTime());
+    else
+    return "Incorrect DateTime";
+    
 }
 
 
