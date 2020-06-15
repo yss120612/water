@@ -21,9 +21,13 @@ bool settime(uint8_t offset);
 String toString(const RtcDateTime& dt);
 String timestring();
 bool isSuccess(){return upd_success;}
+String test();
+bool setMemory(uint8_t d,uint8_t addr);
 private:
 void setfrominet();
+
 RtcDS1302<ThreeWire> * _rtc;
+ThreeWire * _tw;
 //RtcDateTime compiled;
 int _interval,_short_interval;
 long last_update;
