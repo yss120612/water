@@ -4,13 +4,18 @@
 #define _CONFIG_h
 #include "arduino.h"
 
-extern const char * webuser;
+
 extern const char * webpass;
+extern const char * webuser;
 extern const char * wifiuser;
 extern const char * wifipass;
 extern const char * wifiuser1;
 extern const char * wifipass1;
 extern const char * ntp_server;
+extern const char * mqtt_server; // Имя сервера MQTT
+extern const int    mqtt_port; // Порт для подключения к серверу MQTT
+extern const char * mqtt_user; // Логи от сервер
+extern const char * mqtt_pass; // Пароль от сервера
 
 #define TIME_OFFSET 8
 

@@ -27,7 +27,7 @@ public:
 	void handleRoot();
 	/*void setMode(Mode * m);
 	Mode * getMode();*/
-
+	ESP8266WiFiClass * getWiFi() {return & WiFi;}
 private:
 	void handleUpdate();
 	
