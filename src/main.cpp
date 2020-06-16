@@ -54,13 +54,13 @@ void setup() {
   
 }
 
-void processButtons(){
+void processButtons(long ms){
 event_t ev;
-while (btns.getEvent(&ev)){
+if (btns.getEvent(&ev,ms)){
   switch (ev.state)
   {
   case BTN_CLICK:
-    logg.logging("CLICK "+ String(ev.button)+" count="+String(ev.count));
+    logg.logging("CLICK "+ String(ev.button)+" count="+String(ev.count)+" wait="+String(ms-ev.wait_time)+ " millis="+String(ms));
     if (ev.count==1)  if (true)
     {
       logg.logging(rtc.timestring());
@@ -103,7 +103,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   long ms = millis();
   httph.clientHandle();
-  processButtons(); 
+  processButtons(ms); 
   rtc.loop(ms);
   delay(5);
   i+=5;

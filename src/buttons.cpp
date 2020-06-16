@@ -76,7 +76,8 @@ void ICACHE_RAM_ATTR Buttons::_isr(Buttons *_this) {
 #endif
 
   if (_this->_btns.length()>0) {
-    uint32_t time = millis() - _this->_isrtime;
+    long ms=millis();
+    uint32_t time = ms - _this->_isrtime;
     uint32_t inputs = GPI;
     for (uint8_t i = 0; i < _this->_btns.length(); ++i) {
       if (_this->_btns[i].paused)
@@ -97,7 +98,7 @@ void ICACHE_RAM_ATTR Buttons::_isr(Buttons *_this) {
           }
           _this->_btns[i].duration = 0;
           _this->_btns[i].pressed = true;
-          _this->onChange(BTN_PRESSED, i);
+          //_this->onChange(BTN_PRESSED, i);
         }
       } else { // Button released
         if (_this->_btns[i].pressed) { // Was pressed
@@ -107,7 +108,7 @@ void ICACHE_RAM_ATTR Buttons::_isr(Buttons *_this) {
             _this->_btns[i].xdbl = 0;
           } else if (_this->_btns[i].duration >= CLICK_TIME) {
              _this->_btns[i].xdbl += 1;
-             _this->onChange(BTN_CLICK, i,_this->_btns[i].xdbl);
+             _this->onChange(BTN_CLICK, i,_this->_btns[i].xdbl, ms);
           } else {
             //_this->onChange(BTN_RELEASED, i);
           }
@@ -123,25 +124,46 @@ void ICACHE_RAM_ATTR Buttons::_isr(Buttons *_this) {
   _this->_isrtime = millis();
 }
 
-void Buttons::onChange(buttonstate_t state, uint8_t button, uint8_t cnt){
+void Buttons::onChange(buttonstate_t state, uint8_t button, uint8_t cnt, long m){
 event_t evt;
 evt.button=button;
 evt.state=state;
 evt.count=cnt;
+evt.wait_time=m;
+int idx=-1;
+if (cnt>1){
+  for (int k=0;k<_events.length();k++){
+    if (_events[k].button==button && _events[k].state==BTN_CLICK && _events[k].count==(cnt-1)) idx=k;
+  }
+  if (idx>=0) {
+  _events[idx]=evt;
+  return;
+  }
+}
 _events.push_back(evt);
 }
 
-bool Buttons::getEvent(event_t * e){
+bool Buttons::getEvent(event_t * e,long ms){
   
   if (have_event())
   {
-    *e  = _events.front();
+    *e   = _events.front();
     _events.pop_front();
+    if (e->state==BTN_CLICK && ms-e->wait_time<DBLCLICK_TIME){
+    _events.push_back(*e);    
+    return false;
+    }
     return   true;
   }
   
   return   false;
 }
+
+void Buttons::putEvent(event_t *e){
+  
+  _events.push_back(*e);
+}
+
 
 void Buttons::cleanup(void *ptr) {
 #ifdef INTR_EXCLUSIIVE
