@@ -11,6 +11,7 @@
  }
     void  MqttClient::setup(){
         WiFiClient * wf = new WiFiClient();
+        
         client = new PubSubClient(mqtt_server, mqtt_port,*wf);
     };
 
