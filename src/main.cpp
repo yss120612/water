@@ -96,6 +96,18 @@ if (btns.getEvent(&ev,ms)){
 }
 }
 
+void processMQQT(char* topic, byte* payload, unsigned int length) {//callback function
+  String res="Message arrived ["+String(topic)+"] :";
+  logg.logging("Message arrived ["+String(topic)+"] ");
+  for (int i = 0; i < length; i++) {
+    res+=(char)payload[i];
+  }
+  
+logg.logging(res);
+}
+
+
+
 int i=0;
 int k=0;
 
