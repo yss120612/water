@@ -42,7 +42,7 @@ void setup() {
   
   httph.setup();
   btns.add(D3,LOW);
-  
+  rtc.setup();  
 
     
 
@@ -109,7 +109,7 @@ logg.logging(res);
 
 
 int i=0;
-int k=0;
+int k=1;
 
 void loop() {
   // put your main code here, to run repeatedly:
@@ -118,17 +118,20 @@ void loop() {
   processButtons(ms); 
   rtc.loop(ms);
   delay(5);
-  i+=5;
-    
+  i+=5*k;
+  if (i>=1020) k=-1;
+  else if (i<=5) k=1;
+  analogWrite(LED_BUILTIN,i);
+  
 
   if (i>500) {
-  if (k==0)    rtc.setup();
-  k=1;
+  //if (k==0)    rtc.setup();
+  //k=1;
     //logg.logging(timeClient.getFormattedTime());
     //logg.logging(String(timeClient.getMinutes()));
-    i=0;
+    //i=0;
     
-    digitalWrite(LED_BUILTIN,!digitalRead(LED_BUILTIN));
+    //digitalWrite(LED_BUILTIN,!digitalRead(LED_BUILTIN));
   }
 }
 
