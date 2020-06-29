@@ -42,6 +42,7 @@ void setup() {
   
   httph.setup();
   btns.add(D3,LOW);
+  btns.add(D8,HIGH);
   rtc.setup();  
 
     
