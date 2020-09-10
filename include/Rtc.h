@@ -23,6 +23,7 @@ String timestring();
 bool isSuccess(){return upd_success;}
 String test();
 bool setMemory(uint8_t d,uint8_t addr);
+uint8_t getMemory(uint8_t addr);
 private:
 void setfrominet();
 

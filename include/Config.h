@@ -29,4 +29,7 @@ extern const char * mqtt_pass; // Пароль от сервера
 #define DS1302_DAT D1
 #define DS1302_RST D0
 
+#define MEM_ALARM 0
+
+
 #endif

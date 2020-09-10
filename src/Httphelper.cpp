@@ -1,5 +1,5 @@
 ﻿#include "Httphelper.h"
-#include <LittleFS.h>
+//#include <LittleFS.h>
 #include <FS.h>
 #include <ArduinoJson.h>
 #include  "Log.h"
@@ -9,7 +9,7 @@
 HttpHelper::HttpHelper()
 {
 	server = new ESP8266WebServer(80);
-	if (!LittleFS.begin()){
+	if (!SPIFFS.begin()){
 		logg.logging("FS Error");
 	}
 	//LittleFS.format();
@@ -21,7 +21,7 @@ HttpHelper::~HttpHelper()
 	//delete httpUpdater;
 	delete httpSpiffsUpdater;
 	delete server;
-	LittleFS.end();
+	SPIFFS.end();
 	// SPIFFS.end();	
 }
 
@@ -52,7 +52,7 @@ void HttpHelper::setup() {
 
 	//server->serveStatic("/heater",SPIFFS,"/heater.htm", NULL);
 
-	server->serveStatic("/log", LittleFS, "/log.htm", NULL);
+	server->serveStatic("/log", SPIFFS, "/log.htm", NULL);
 
 	//server->serveStatic("/distill", SPIFFS, "/distillation.htm", NULL);
 
@@ -62,17 +62,17 @@ void HttpHelper::setup() {
 
 	//server->serveStatic("/brewing", SPIFFS, "/brewing.htm", NULL);
 
-	server->serveStatic("/css/bootstrap.min.css", LittleFS, "/css/bootstrap.min.css", NULL);
+	server->serveStatic("/css/bootstrap.min.css", SPIFFS, "/css/bootstrap.min.css", NULL);
 
-	server->serveStatic("/js/bootstrap.min.js", LittleFS, "/js/bootstrap.min.js", NULL);
+	server->serveStatic("/js/bootstrap.min.js", SPIFFS, "/js/bootstrap.min.js", NULL);
 
-	server->serveStatic("/js/jquery.min.js", LittleFS, "/js/jquery.min.js", NULL);
+	server->serveStatic("/js/jquery.min.js", SPIFFS, "/js/jquery.min.js", NULL);
 
-	server->serveStatic("/js/export-data.js", LittleFS, "/js/export-data.js", NULL);
+	server->serveStatic("/js/export-data.js", SPIFFS, "/js/export-data.js", NULL);
 
-	server->serveStatic("/js/exporting.js", LittleFS, "/js/exporting.js", NULL);
+	server->serveStatic("/js/exporting.js", SPIFFS, "/js/exporting.js", NULL);
 
-	server->serveStatic("/js/highstock.js", LittleFS, "/js/highstock.js", NULL);
+	server->serveStatic("/js/highstock.js", SPIFFS, "/js/highstock.js", NULL);
 			
 	server->begin();
 
@@ -349,15 +349,15 @@ boolean HttpHelper::handleFileRead(String path) {
 	//look for smaller versions of file
 	//minified file, good (myscript.min.js)
 	 
-	if (LittleFS.exists(prefix + ".min" + ext)) path = prefix + ".min" + ext;
+	if (SPIFFS.exists(prefix + ".min" + ext)) path = prefix + ".min" + ext;
 	//gzipped file, better (myscript.js.gz)
-	if (LittleFS.exists(prefix + ext + ".gz")) path = prefix + ext + ".gz";
+	if (SPIFFS.exists(prefix + ext + ".gz")) path = prefix + ext + ".gz";
 	//min and gzipped file, best (myscript.min.js.gz)
-	if (LittleFS.exists(prefix + ".min" + ext + ".gz")) path = prefix + ".min" + ext + ".gz";
+	if (SPIFFS.exists(prefix + ".min" + ext + ".gz")) path = prefix + ".min" + ext + ".gz";
 
-	if (LittleFS.exists(path)) {
+	if (SPIFFS.exists(path)) {
 
-		File file = LittleFS.open(path, "r");
+		File file = SPIFFS.open(path, "r");
 		//if (server->hasArg())
 		if (server->hasArg("download"))
 			server->sendHeader("Content-Disposition", " attachment;");

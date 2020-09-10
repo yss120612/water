@@ -36,7 +36,8 @@ timeClient->begin();
 //RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
 timeClient->begin();
 _rtc->Begin();
-
+_rtc->SetIsRunning(true);
+_rtc->SetIsWriteProtected(false);
 //logg.logging(toString(compiled));
 
 }
@@ -85,7 +86,7 @@ void Rtc1302::setfrominet(){
     RtcDateTime d;
     
     d.InitWithEpoch64Time(timeClient->getEpochTime());
-    logg.logging(String(d.Hour())+":"+String(d.Minute())+":"+String(d.Second()));
+    logg.logging("Success update " +toString(d));
     _rtc->SetDateTime(d);
 }
 
@@ -111,22 +112,16 @@ String Rtc1302::toString(const RtcDateTime& dt)
 }
 
 bool Rtc1302::setMemory(uint8_t d,uint8_t addr){
-    _rtc->SetMemory(&d,1);
+    _rtc->SetMemory(&d,addr);
+}
+
+uint8_t Rtc1302::getMemory(uint8_t addr){
+    _rtc->GetMemory(addr);
 }
 
 String Rtc1302::test(){
-String res;
-res="Memory one="+String(_rtc->GetMemory(0));
-res+=" WP one="+String(_rtc->GetIsWriteProtected());
-_rtc->SetIsRunning(true);
-_rtc->SetIsWriteProtected(false);
-//RtcDateTime dt(2020,6,15,17,5,0);
-//_rtc->SetDateTime(dt);
-_rtc->SetMemory((uint8_t)0,(uint8_t)7);
+String res=timestring();
 
-//_rtc->SetDateTime()
-res+=" Memory two="+String(_rtc->GetMemory(0));
-res+=" WP two="+String(_rtc->GetIsWriteProtected());
 return res;    
 }
 
