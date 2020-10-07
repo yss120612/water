@@ -33,6 +33,7 @@ extern const char * mqtt_pass; // Пароль от сервера
 #define PIN_VCLOSE D8
 
 #define MEM_ALARM 0
+#define MEM_VALVE 1
 
 
 #endif

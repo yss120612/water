@@ -2,17 +2,44 @@
 #define __VALVE_H
 
 #include <Arduino.h>
+#include "Rtc.h"
+#include "Config.h"
 
-class valve
+enum ValveStatus {
+    OPENED,
+    CLOSED
+};
+
+
+enum ValveAction {
+    RELAXED,
+    INOPEN,
+    INCLOSE,
+    INSWITCH
+};
+
+
+class Valve
 {
 private:
     uint8_t VOPEN;
     uint8_t VCLOSE;
+    bool in_progress;
+    const uint16_t ACTION_TIME=1000*8;//8 second
+    long curr_time;
+    ValveStatus status;
+    ValveAction action;
+    void run();
+    void stop();
+    Rtc1302 * rtc;
 public:
-void setup();
-
-    valve();
-    ~valve();
+void setup(Rtc1302 * r);
+void open();
+void swc();
+void close();
+void processValves(long m);
+    Valve(uint8_t OP, uint8_t CL);
+    ~Valve();
 };
 
 

@@ -134,4 +134,16 @@ String Rtc1302::timestring()
     
 }
 
+bool Rtc1302::check_time(uint8_t d, uint8_t h,uint8_t m)
+{
+    if (_rtc->IsDateTimeValid()){
+        RtcDateTime dt=_rtc->GetDateTime();
+        return (d==dt.Day() && h==dt.Hour() && m=dt.Minute());
+    _rtc->GetDateTime();
+    }
+    else
+    return false;
+    
+}
+
 

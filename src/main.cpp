@@ -8,13 +8,14 @@
 #include "Rtc.h"
 #include "Buttons.h"
 #include "wsensors.h"
+#include "valve.h"
 #include "Config.h"
 
 HttpHelper httph;
 Rtc1302 rtc;
 Buttons btns;
 Wsensors wsens;
-
+Valve valve(PIN_VOPEN,PIN_VCLOSE);
 //NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 3600, 60000);//0ne per day
 //NTPClient timeClient(ntpUDP);//0ne per day
 int8_t timeZone = 8;
@@ -53,7 +54,7 @@ void setup() {
   //btns.add(D8,HIGH);
   rtc.setup();  
   wsens.setup(&rtc);
- 
+  valve.setup(&rtc);
 
 
 
@@ -133,6 +134,7 @@ void loop() {
   httph.clientHandle();
   processButtons(ms); 
   wsens.processSensors(ms);
+  valve.processValves(ms);
   rtc.loop(ms);
   delay(5);
   i+=5*k;

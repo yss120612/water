@@ -17,9 +17,7 @@ if (r->getMemory(MEM_ALARM)){
         alarm();
         }
 };
-
-
-
+ 
 
 void Wsensors::alarm()
 {
