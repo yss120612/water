@@ -6,8 +6,8 @@
 #include "Config.h"
 
 enum ValveStatus {
-    OPENED,
-    CLOSED
+    OPN,
+    CLS
 };
 
 
@@ -26,7 +26,9 @@ private:
     uint8_t VCLOSE;
     bool in_progress;
     const uint16_t ACTION_TIME=1000*8;//8 second
-    long curr_time;
+    const long CHECK_TIME=1000*60*60*24;//one hour
+    long start_action_time;
+    long last_time;
     ValveStatus status;
     ValveAction action;
     void run();

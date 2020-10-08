@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <QList.h>
 #include "Rtc.h"
+#include "valve.h"
 
 struct alarm_t {
     uint8_t sensorN;
@@ -34,9 +35,10 @@ private:
     void disalarm_event(uint8_t n);
     uint8_t ALARM;
     Rtc1302 * rtc;
+    Valve * vlv;
 public:
     void processSensors(long ms);
-    void setup(Rtc1302 * r);
+    void setup(Rtc1302 * r, Valve * v);
     void addSensor(uint8_t pin,String name); 
     bool isALARM(){return ALARM>0;}
     Wsensors(/* args */);

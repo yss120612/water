@@ -13,7 +13,7 @@ Wsensors::~Wsensors()
 
 void Wsensors::setup(Rtc1302 * r){ 
         rtc=r;
-if (r->getMemory(MEM_ALARM)){
+if (rtc->getMemory(MEM_ALARM)){
         alarm();
         }
 };
@@ -23,12 +23,13 @@ void Wsensors::alarm()
 {
     ALARM=1;
     rtc->setMemory(1,MEM_ALARM);
-
+    vlv->close();
 }
 
 void Wsensors::disalarm()
 {
     ALARM=0;
+    vlv->open();
     rtc->setMemory(0,MEM_ALARM);
     for (uint8_t i = 0; i < _snsrs.size(); i++)
     {

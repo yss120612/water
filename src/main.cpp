@@ -53,9 +53,8 @@ void setup() {
   //pinMode(D7,INPUT_PULLUP);
   //btns.add(D8,HIGH);
   rtc.setup();  
-  wsens.setup(&rtc);
   valve.setup(&rtc);
-
+  wsens.setup(&rtc, &valve);
 
 
     
@@ -75,25 +74,15 @@ if (btns.getEvent(&ev,ms)){
   {
   case BTN_CLICK:
     logg.logging("CLICK "+ String(ev.button)+" count="+String(ev.count)+" wait="+String(ms-ev.wait_time)+ " millis="+String(ms));
-    if (ev.count==1)  if (true)
-    {
-      logg.logging(rtc.timestring());
-    }else{
-      
+    if (ev.count==1){
+
+      wsens.alarm();
     }
-    if (ev.count==2) {
-      logg.logging("Success= "+ String(rtc.isSuccess()));
-      //+" time="+rtc.timestring());
-      logg.logging(rtc.test());
-      // pinMode(D0,OUTPUT);
-      // pinMode(D1,OUTPUT);
-      // pinMode(D2,OUTPUT);
-      // digitalWrite(D0,HIGH);
-      // digitalWrite(D1,HIGH);
-      // digitalWrite(D2,HIGH);
+    else if (ev.count==2) {
+      wsens.disalarm();
     }
     if (ev.count==3) {
-      wsens.disalarm();
+      valve.swc();
     }
     break;
   case BTN_LONGCLICK:

@@ -13,7 +13,7 @@ void Valve::setup(Rtc1302 * r)
     pinMode(VCLOSE,OUTPUT);
     in_progress=false;
     action=RELAXED;
-    status=CLOSED;
+    status=CLS;
     rtc=r;
     if (rtc->getMemory(MEM_VALVE)>0)
     {
@@ -49,7 +49,7 @@ void Valve::close()
 
 void Valve::swc()
 {
-    if (status!=OPENED) return;
+    if (status!=OPN) return;
     pinMode(VCLOSE,HIGH);
     action=INSWITCH;
     run();
@@ -58,7 +58,7 @@ void Valve::swc()
 void Valve::run()
 {
     in_progress=true;
-    curr_time=millis();
+    start_action_time=millis();
 }
 
 void Valve::stop()
@@ -70,13 +70,13 @@ void Valve::stop()
     switch (action)
     {
     case INOPEN:
-        status=OPENED;
+        status=OPN;
         break;
     case INCLOSE:
-        status=CLOSED;
+        status=CLS;
         break;
     case INSWITCH:
-        status=CLOSED;
+        status=CLS;
         open();
         break;
     default:
@@ -86,8 +86,12 @@ void Valve::stop()
 
 void Valve::processValves(long m){
     
+    if(m-last_time>CHECK_TIME){
+        last_time=m;
+        if (rtc->check_time(1,1)) swc();// in 1 st day of month in 1 hour of night
+    }
     if (!in_progress) return;
-    if (m-curr_time>ACTION_TIME){
+    if (m-start_action_time>ACTION_TIME){
         stop();
     }
 }
